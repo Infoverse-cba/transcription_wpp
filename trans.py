@@ -46,7 +46,8 @@ class AudioTranscriptionBot:
         session = requests.Session()
         response = session.get('https://api.dev.infoverse.com.br/v1/Bot_adm/file_transcription/1', headers=headers)
 
-        if response.status_code == 200:
+        if response.json()['status']:
+            print('dir', response.json())
             data = response.json()['data'][0]
             base64_string = data['base64']
             id_message = data['id_message']
@@ -60,7 +61,7 @@ class AudioTranscriptionBot:
 
             return id_message
         else:
-            raise Exception('Failed to fetch messages from API')
+            return None
 
     def mp3_to_text(self, mp3_file_path: str = 'audio.mp3') -> str:
         """
@@ -108,8 +109,11 @@ class AudioTranscriptionBot:
         """
         while True:
             id_message = self.get_messages()
-            transcribed_text = self.mp3_to_text('audio.mp3')
-            self.send_text(transcribed_text, id_message)
+            if id_message is not None:
+                transcribed_text = self.mp3_to_text('audio.mp3')
+                self.send_text(transcribed_text, id_message)
+            else:
+                print('\rNo messages found', end='', flush=True)
 
 if __name__ == '__main__':
     bot = AudioTranscriptionBot()
