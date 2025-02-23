@@ -25,19 +25,16 @@ def start_session(sessions_info):
                 print(f"Sessão {session_name} iniciada com a tarefa: {tarefa}")
 
                 # Registre a data e hora em que a sessão foi iniciada no arquivo de log correspondente
-                
-                    
+
     except Exception as e:
         print(f"Erro ao iniciar sessão: {e}")
+
 
 if __name__ == "__main__":
     path = os.path.dirname(os.path.abspath(__file__))
 
     sessions_info = []
 
-
-    sessions_info.append(["trans", path+"/trans.py"])
+    sessions_info.append(["dev_trans", path + "/trans.py"])
 
     start_session(sessions_info)
-
-    
